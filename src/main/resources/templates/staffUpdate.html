@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>员工编辑</title>
+</head>
+<script type="text/javascript" src="../static/jquery-3.3.1.js"></script>
+<script type="text/javascript">
+    function kkk() {
+        //获取表单数据
+        //var params = $("#ddd").serialize();
+        var id = document.getElementById("a00").value;
+        var name = document.getElementById("a11").value;
+        var password = document.getElementById("a22").value;
+        var age = document.getElementById("a33").value;
+        // alert(id);
+        // alert(name);
+        // alert(password);
+        // alert(age);
+        $.ajax({
+            // url: "staff/addstaff",
+            // data: {"staffName":name,"staffPassword":password,"staffAge":age},
+            // success:function(data) {
+            //     alert(data);
+            // },
+            // error:function () {
+            //     alert("出错");
+            // },
+            // dataType: "json",
+            // type: "POST"
+        });
+    }
+
+</script>
+<body>
+<div th:replace="~{commons/bar::ddd}">
+
+</div>
+<div>
+    <form>
+        <input id="a00" type="text" th:value="${staff2.id}" name="staffId" readonly="readonly"/><br/>
+        <p>用户名</p>
+        <input id="a11" type="text" th:value="${staff2.name}" name="staffName"/><br/>
+        <p>密码</p>
+        <input id="a22" type="password" th:value="${staff2.password}" name="staffPassword"/><br/>
+        <p>年龄</p>
+        <input id="a33" type="text" th:value="${staff2.age}" name="staffAge"/><br/>
+        <button type="button"  onclick="kkk()">提交</button>
+    </form>
+</div>
+</body>
+</html>

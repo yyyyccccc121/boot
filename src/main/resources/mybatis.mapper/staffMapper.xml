@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springtest.mapper.StaffDao">
+    <!-- 根据uid查询一个用户密码 -->
+    <select id="selectPasswordById" parameterType="java.lang.String"
+            resultType="java.lang.String">
+		select  password from staff where name = #{name}
+	</select>
+
+    <select id="findAll" resultType="com.springtest.model.staff">
+		select  * from staff
+	</select>
+
+	<select id="selectAllById" parameterType="java.lang.Integer" resultType="com.springtest.model.staff">
+		select  * from staff where id = #{id}
+	</select>
+
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from staff where id = #{id}
+	</delete>
+
+	<insert id="AddStaff" parameterType="com.springtest.model.staff">
+		insert into staff
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="password != null">
+				password,
+			</if>
+			<if test="age != null">
+				age,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="name != null">
+				#{name},
+			</if>
+			<if test="password != null">
+				#{password},
+			</if>
+			<if test="age != null">
+				#{age},
+			</if>
+		</trim>
+	</insert>
+</mapper>

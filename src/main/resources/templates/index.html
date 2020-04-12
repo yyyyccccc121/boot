@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <style>
+        .messages{
+            min-height:400px;
+            margin-bottom: 10px;border: 1px solid gainsboro;
+        }
+        .warper{clear: both;margin: 10px;display: block;
+            min-height: 32px;
+        }
+        .voiceItem{
+            background-color:skyblue;
+            min-width: 100px;
+            min-height: 32px;
+            border-radius: 3px;
+            float: right;
+            cursor: pointer;
+            line-height: 32px;
+            text-indent: 10px;
+        }
+        audio{display: none;}
+        .error{color: red;font-size: small;text-align: center;margin-top: 10px;}
+        .contrs{text-align: center;}
+    </style>
+</head>
+<script>
+    function myMouseEnter() {
+        console.log("鼠标进入！")
+    }
+    function myMouseLeave() {
+        console.log("鼠标离开！")
+    }
+</script>
+<body>
+
+<div>
+    <div class="messages">
+
+
+    </div>
+
+    <audio controls autoplay></audio>
+    <div class="contrs">
+        <input type="button" value="开始录音" onclick="startRecording()"/>
+        <input type="button" value="获取录音" onclick="obtainRecord()"/>
+        <input type="button" value="发送" onclick="send()"/>
+        <!-- <input type="button" value="播放录音" onclick="playRecord()"/>   -->
+    </div>
+    <div class="error">
+
+    </div>
+</div>
+<script src="../static/jquery-3.3.1.js"></script>
+<script src="../static/recoder.js"></script>
+<script src="../static/main.js"></script>
+
+<!--    <div th:replace="~{commons/bar::ddd}">-->
+
+<!--    </div>-->
+<!--    <div>-->
+<!--        此处应该是主体-->
+<!--        <div onmouseenter="myMouseEnter()" onmouseleave="myMouseLeave()">鼠标进入和离开</div>-->
+<!--    </div>-->
+<!--    <form action="pushUserIcon" method="post" enctype="multipart/form-data">-->
+<!--        <table>-->
+<!--            <tr>-->
+<!--                <td width="50" align=left>图片：</td>-->
+<!--                <td><input type="file" id="aptitude" name="file"/></td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td width="50" align="left">用户id：</td>-->
+<!--                <td><input type="text" name="userId"/></td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td><input type="submit"> </td>-->
+<!--            </tr>-->
+<!--        </table>-->
+<!--    </form>-->
+</body>
+</html>

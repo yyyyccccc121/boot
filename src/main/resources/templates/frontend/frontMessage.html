@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>我的老友</title>
+
+    <script type="text/javascript" src="../../static/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="../../static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../static/stomp.min.js"></script>
+    <script type="text/javascript" src="../../static/sockjs.min.js"></script>
+    <script type="text/javascript">
+
+
+        var myname = $.cookie("username");
+        var socket = new SockJS('/coordination');
+        var stompClient = Stomp.over(socket);
+        //向服务器发起websocket连接并发送CONNECT帧
+        stompClient.connect('', '', function (frame) {
+            // 连接成功时（服务器响应 CONNECTED 帧）的回调方法
+            stompClient.subscribe('/userChat/chat' + myname, function (chat) {
+                alert(chat);
+                showChat(JSON.parse(chat.body));
+            });});
+
+
+        function sendMessage(message) {
+            var input = document.getElementById("message").value;
+            stompClient.send("/app/userChat", {}, JSON.stringify({
+                'fromname': myname,
+                'content': encodeURIComponent(input),
+                'toname': document.getElementById("friendname").innerHTML
+            }));
+
+            //显示自己发送的消息
+            var response = document.getElementById('messageView');
+            response.value += myname + ':' + decodeURIComponent(input) + '\n';
+        }
+
+        function showChat(message) {
+
+            //显示别人发的消息
+            //如果别人发给我的消息的人是我当前打开这个窗口的名字就把消息显示出来
+            var CurrentFriendName = document.getElementById("friendname").innerHTML;
+            if(message.fromname==CurrentFriendName) {
+                var response = document.getElementById('messageView');
+                response.value += decodeURIComponent(message.content) + ':' + decodeURIComponent(message.fromname) + '\n';
+            }
+            //如果不是就把消息存入数据库,状态设置为未读
+            else {
+                $.ajax({
+                    url:"http://192.168.101.133:8080/websocket/StoreToDatabase",
+                    data:{'from': message.fromname,'to': message.toname,'content':message.content},
+                    success:function (data) {
+                        alert("此时存入了数据库");
+                    },
+                    error:function () {
+                        alert("showChat-error");
+                    },
+                    dataType:"json",
+                });
+            }
+        }
+
+        //获取当前元素的父节点的兄弟节点的子节点的值
+        function ff(data) {
+            var friendname = data.parentNode.previousElementSibling.firstChild.innerHTML;
+            $("#friendname").html(friendname);
+
+            //查看数据库里是否有我点击的这个人发给我的未读的消息，有就显示出来
+            $.ajax({
+                url:"http://192.168.101.133:8080/websocket/findunreadMessage",
+                data:{'from': document.getElementById("friendname").innerHTML,'to': myname},
+                success:function (data) {
+                    var response = document.getElementById('messageView');
+                    //先把和别人聊天的内容清空
+                    response.value="";
+                    //消息不为空就显示出来
+                    if(data!=null&&data!="") {
+                        $.each(data, function (index, ele) {
+                            var fromname = ele.fromname;
+                            var content = ele.content;
+                            response.value += decodeURIComponent(content) + ':' + decodeURIComponent(fromname) + '\n';
+                        });
+                    }
+                },
+                error:function () {
+                    alert("ff-error");
+                },
+                dataType:"json"
+            });
+
+        }
+
+    </script>
+
+
+</head>
+<body>
+<div th:replace="~{commons/frontbar::vvv}">
+
+</div>
+<table>
+    <thead>
+
+    </thead>
+    <tbody>
+    <tr th:each="friend:${friends}">
+        <div>
+            <div id="ss" style="display:inline-block"><div>[[${friend.name}]]</div></div>
+            <div style="display:inline-block"><input type="button" id="button1" value="发送消息" onclick="ff(this)"/></div>
+        </div>
+    </tr>
+    </tbody>
+</table>
+<div th:align="right">
+<div id="friendname"></div>
+<br/>
+    <textarea th:id="messageView" th:rows="20" th:cols="50" readonly="readonly"></textarea><br/>
+    <textarea type="text" th:id="message"></textarea> <br/>
+    <input type="button" th:value="发送" onclick="sendMessage('message')"/>
+</div>
+</body>
+</html>

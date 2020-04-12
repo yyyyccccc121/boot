@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>导航栏</title>
+</head>
+<body>
+    <div th:fragment="ddd">
+        <div>选项</div>
+        <div><a th:href="@{/staff/findAll}">员工管理</a></div>
+        <div><a th:href="@{/tostaffAdd}">添加员工</a></div>
+        <div>更让多操作轻轻期待</div>
+    </div>
+</body>
+</html>

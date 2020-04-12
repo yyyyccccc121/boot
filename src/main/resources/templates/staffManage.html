@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>员工管理页面</title>
+</head>
+<body>
+<div th:replace="~{commons/bar::ddd}">
+
+</div>
+<table>
+    <thead>
+    <tr>
+        <th>id</th>
+        <th>用户名</th>
+        <th>密码</th>
+        <th>年龄</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="staff:${staffs}">
+        <td th:text="${staff.id}"></td>
+        <td th:text="${staff.name}"></td>
+        <td th:text="${staff.password}"></td>
+        <td>[[${staff.age}]]</td>
+        <td><a th:href="@{/staff/staffupdate/}+${staff.id}">编辑</a></td>
+        <td><a th:href="@{/staff/staffdelete/}+${staff.id}">删除</a></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

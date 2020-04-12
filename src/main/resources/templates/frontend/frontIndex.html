@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>我的主页</title>
+    <script type="text/javascript" src="../../static/jquery-3.3.1.js"></script>
+    <script>
+
+        function sendMessage(){
+            var input = document.getElementById("message").value;
+            //清空发送框
+            document.getElementById("message").value="";
+            //显示自己发送的消息
+            document.getElementById("messageView").innerHTML+=
+                "<div style=\"float:right\">"+decodeURIComponent(input) +"</div>"+"<br/><br/>";
+        }
+
+        $(function () {
+            $("#upload").click(function () {
+                var formData = new FormData($('#uploadForm')[0]);
+                formData.append("extra", "123456");
+                $.ajax({
+                    type: 'post',
+                    url: "manage/excelImport.do",
+                    data: formData,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    success:function (data) {
+                        document.getElementById("messageView").innerHTML+=
+                            "<a class=\"btn btn-info\" href=\"/util/downfile?fileNname="+data+"\">下载</a>";
+                    },
+                    error:function () {
+                        alert("上传失败");
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<div th:replace="~{commons/frontbar::vvv}">
+</div>
+<!--聊天框-->
+<div id="ChatBox">
+    <div id="messageView" style="border:1px solid antiquewhite;overflow-y:auto; overflow-x:auto; height:400px; width:500px">
+    </div>
+    <form id="uploadForm" enctype="multipart/form-data">
+        文件:<input type="file" name="file" multiple="multiple"/><br>
+    </form>
+    <button id="upload">上传文件</button>
+    <br/>
+    <textarea type="text" id="message" style="height:60px; width:500px"></textarea> <br/>
+    <input type="submit" th:value="发送" onclick="sendMessage()"/>
+</div>
+
+</body>
+</html>

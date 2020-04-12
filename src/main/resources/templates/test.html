@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>成功</h1>
+<div th:text="${hello}">如果经过了模板引擎这句话就不会显示，直接运行这个html这句话就会显示</div>
+<!--每次遍历都会生成这个标签，这会有3个 h3-->
+<h3 th:text="${user}" th:each="user:${Users}"></h3>
+
+<!--会有3个span-->
+<h3>
+    <span th:each="user:${Users}">[[${user}]]</span>
+</h3>
+</body>
+</html>

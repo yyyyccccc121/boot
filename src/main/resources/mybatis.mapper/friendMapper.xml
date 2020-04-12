@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springtest.mapper.FriendDao">
+    <select id="findAll" resultType="com.springtest.model.friend">
+		select  * from friend
+	</select>
+
+	<select id="findByusername" parameterType="java.lang.String" resultType="java.lang.String">
+		select  password from friend where name = #{name}
+	</select>
+	
+	<insert id="unreadMessage" parameterType="com.springtest.model.InfoMessage">
+		insert into infomessage (fromname,toname,content,state) values (#{fromname},#{toname},#{content},#{state})
+	</insert>
+
+	<select id="findunreadMessage" parameterType="java.lang.String" resultType="com.springtest.model.InfoMessage">
+		select  * from infomessage where fromname = #{fromname} and toname = #{toname} and state=0
+	</select>
+
+	<update id="upMessage" parameterType="java.lang.String">
+		update infomessage SET state=1 where fromname = #{fromname} and toname = #{toname}
+	</update>
+</mapper>

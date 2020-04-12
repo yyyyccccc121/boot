@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>员工添加页面</title>
+</head>
+<script type="text/javascript" src="../static/jquery-3.3.1.js"></script>
+<script type="text/javascript">
+    function tijiao() {
+        //获取表单数据
+        //var params = $("#ddd").serialize();
+        var name = document.getElementById("a1").value;
+        var password = document.getElementById("a2").value;
+        var age = document.getElementById("a3").value;
+        $.ajax({
+            url: "staff/addstaff",
+            data: {"staffName":name,"staffPassword":password,"staffAge":age},
+            success:function(data) {
+                alert(data.s);
+            },
+            error:function () {
+                alert("返回出错");
+            },
+            dataType: "json",
+            type: "POST"
+        });
+    }
+
+</script>
+<body>
+    <div th:replace="~{commons/bar::ddd}">
+
+    </div>
+    <div>
+        <form id="ddd">
+            <p>用户名</p>
+            <input id="a1" type="text" name="staffName"/><br/>
+            <p>密码</p>
+            <input id="a2" type="password" name="staffPassword"/><br/>
+            <p>年龄</p>
+            <input id="a3" type="text" name="staffAge"/><br/>
+            <button type="button"  onclick="tijiao()">提交</button>
+        </form>
+    </div>
+
+</body>
+</html>
